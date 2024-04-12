@@ -1,0 +1,67 @@
+@host = http://localhost:3000
+@currUser = username_abc
+@currPass = password123
+
+# @name registerUser
+# register a user
+POST {{host}}/register
+Content-Type: application/json
+
+{
+    "username":"{{currUser}}",
+    "password":"{{currPass}}"
+}
+
+###
+
+# @name loginUser
+# log a user in
+POST {{host}}/login
+Content-Type: application/json
+Authorization: Bearer {{access_token}}
+
+{
+    "username":"{{currUser}}",
+    "password":"{{currPass}}"
+}
+
+@access_token = {{loginUser.response.body.data.access_token}}
+@refresh_token = {{loginUser.response.body.data.refresh_token}}
+
+###
+
+# @name refreshToken
+# refresh user tokens
+POST {{host}}/refresh-token
+Content-Type: application/json
+
+{
+    "refresh_token":"{{refresh_token}}"
+}
+
+@access_token = {{refreshToken.response.body.data.access_token}}
+@refresh_token = {{refreshToken.response.body.data.refresh_token}}
+
+###
+
+# @name getBooks
+# get all books by logged-in user
+GET {{host}}/books
+
+###
+
+# @name getABook
+# get a book by logged-in user
+GET {{host}}/books/14
+
+###
+
+# @name createBook
+# create a book for logged-in user
+POST {{host}}/books
+Content-Type: application/json
+
+{
+    "author":"author {{currUser}}",
+    "title":"title by {{currUser}}"
+}
